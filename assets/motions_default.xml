@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<motions>
+    <motion id="0">
+        <name>Connect</name>
+        <sensor>
+            <type>1</type>
+            <value>10</value>
+        </sensor>
+        <motor id="0">
+            <init>0</init>
+            <start>-5</start>
+            <stop>5</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="1">
+            <init>0</init>
+            <start>3</start>
+            <stop>-3</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="2">
+            <init>0</init>
+            <start>-1</start>
+            <stop>1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="3">
+            <init>0</init>
+            <start>2</start>
+            <stop>-2</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <sound>
+            <index>1</index>
+            <delay>100</delay>
+        </sound>
+        <led>
+            <blink>1</blink>
+            <delay>50</delay>
+        </led>
+	</motion>
+    <motion id="1">
+        <name>DisConnect</name>
+        <sensor>
+            <type>1</type>
+            <value>10</value>
+        </sensor>
+        <motor id="0">
+            <init>0</init>
+            <start>-1</start>
+            <stop>1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="1">
+            <init>0</init>
+            <start>-5</start>
+            <stop>5</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="2">
+            <init>0</init>
+            <start>2</start>
+            <stop>2</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="3">
+            <init>0</init>
+            <start>3</start>
+            <stop>3</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <sound>
+            <index>1</index>
+            <delay>100</delay>
+        </sound>
+        <led>
+            <blink>1</blink>
+            <delay>50</delay>
+        </led>
+    </motion>
+    <motion id="2">
+        <name>LowBattery</name>
+        <sensor>
+            <type>1</type>
+            <value>10</value>
+        </sensor>
+        <motor id="0">
+            <init>0</init>
+            <start>1</start>
+            <stop>-1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="1">
+            <init>0</init>
+            <start>-1</start>
+            <stop>1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="2">
+            <init>0</init>
+            <start>1</start>
+            <stop>-1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="3">
+            <init>0</init>
+            <start>2</start>
+            <stop>-2</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <sound>
+            <index>1</index>
+            <delay>100</delay>
+        </sound>
+        <led>
+            <blink>1</blink>
+            <delay>50</delay>
+        </led>
+    </motion>    
+    <motion id="3">
+        <name>Vibration</name>
+        <sensor>
+            <type>1</type>
+            <value>10</value>
+        </sensor>
+        <motor id="0">
+            <init>0</init>
+            <start>0</start>
+            <stop>0</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="1">
+            <init>0</init>
+            <start>-2</start>
+            <stop>2</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="2">
+            <init>0</init>
+            <start>0</start>
+            <stop>5</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="3">
+            <init>0</init>
+            <start>3</start>
+            <stop>0</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <sound>
+            <index>1</index>
+            <delay>100</delay>
+        </sound>
+        <led>
+            <blink>1</blink>
+            <delay>50</delay>
+        </led>
+    </motion>    
+    <motion id="4">
+        <name>Action</name>
+        <sensor>
+            <type>1</type>
+            <value>10</value>
+        </sensor>
+        <motor id="0">
+            <init>0</init>
+            <start>-1</start>
+            <stop>1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="1">
+            <init>0</init>
+            <start>-1</start>
+            <stop>1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="2">
+            <init>0</init>
+            <start>2</start>
+            <stop>-2</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <motor id="3">
+            <init>0</init>
+            <start>1</start>
+            <stop>-1</stop>
+            <delay>100</delay>
+            <hold>80</hold>
+            <repeat>5</repeat>
+        </motor>
+        <sound>
+            <index>1</index>
+            <delay>100</delay>
+        </sound>
+        <led>
+            <blink>1</blink>
+            <delay>50</delay>
+        </led>
+    </motion>    
+</motions>
