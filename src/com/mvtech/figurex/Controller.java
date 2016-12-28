@@ -19,15 +19,17 @@ import android.util.Log;
 
 public class Controller {
 	private final String TAG="Controller";
-    private final long SCAN_PERIOD = 10000;
-   
+    
+	private final long SCAN_PERIOD = 10000;
+    private int mRssi = -100;
     public static final int UART_PROFILE_READY = 10;
     public static final int UART_PROFILE_CONNECTED = 20;
     public static final int UART_PROFILE_DISCONNECTED = 21;
 
     
     public static int mState = UART_PROFILE_DISCONNECTED;
-	private boolean mScanning = false;
+	
+    private boolean mScanning = false;
     private UartService mService = null;
     private BluetoothDevice mDevice = null;
     private BluetoothAdapter mBtAdapter = null;	
@@ -56,11 +58,6 @@ public class Controller {
         Thread th = new Thread(new Runnable() {
         	@Override
         	public void run() {
-				if (mState == UART_PROFILE_DISCONNECTED) {
-					((MainActivity) mContext).mTvDeviceName.setText("scanning...");
-					((MainActivity) mContext).mTvMac.setText("");
-					((MainActivity) mContext).mTvRssi.setText("---");
-				}
         		while(true) {
 
         			if( mService != null ) {
@@ -122,13 +119,8 @@ public class Controller {
 				String address = device.getAddress();
 
 				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
-				if( mService.connect(address) ) {
-					mState = UART_PROFILE_CONNECTED;
-					((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
-					((MainActivity)mContext).mTvMac.setText(mDevice.getAddress());
-					((MainActivity)mContext).mTvRssi.setText(String.valueOf(rssi));
-				}
-				
+				mService.connect(address);
+				mRssi = rssi;
 				Log.e(TAG,"mDevice=" + mDevice + ", mac=" + device.getAddress() + " mser=" + mService + ", rssi=" + rssi);
 
 			}            	   
@@ -181,12 +173,18 @@ public class Controller {
            //*********************//
 			if (action.equals(UartService.ACTION_GATT_CONNECTED)) {
 				String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+				((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
+				((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
+				((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
 				Log.d(TAG, "UART_CONNECT_MSG");
 			}
            
           //*********************//
 			if (action.equals(UartService.ACTION_GATT_DISCONNECTED)) {
 				String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+				((MainActivity)mContext).mTvDeviceName.setText("None");
+				((MainActivity)mContext).mTvMac.setText("[--:--:--:--:--:--]");
+				((MainActivity)mContext).mTvRssi.setText("-90");
 				Log.d(TAG, "UART_DISCONNECT_MSG");
 				mService.close();
 			}            

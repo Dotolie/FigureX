@@ -9,42 +9,15 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Device :"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
             android:id="@+id/tv_devicename"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="23dp"
             android:layout_toRightOf="@+id/textView1"
-            android:text="nordig_uart      "
+            android:text="none"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ff10aaf0" />
-
-        <TextView
-            android:id="@+id/tv_rssi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:text="-10"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#ffaa3333" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="22dp"
-            android:layout_toLeftOf="@+id/tv_rssi"
-            android:text="Rssi:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/tv_mac"
@@ -53,9 +26,40 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="39dp"
             android:layout_toRightOf="@+id/tv_devicename"
-            android:text="[ad:df:30:40:50:60]"
+            android:text="[--:--:--:--:--:--]"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#ffaab000" />
+
+        <TextView
+            android:id="@+id/tv_rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="21dp"
+            android:text="-90"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffaa3333" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="21dp"
+            android:text="Device :"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="21dp"
+            android:layout_toLeftOf="@+id/tv_rssi"
+            android:text="Rssi:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </RelativeLayout>
 
@@ -63,7 +67,7 @@
         android:id="@+id/lv_list"
         android:layout_width="fill_parent"
         android:layout_height="334dp"
-        android:layout_weight="3.06" >
+        android:layout_weight="4.87" >
 
     </ListView>
 

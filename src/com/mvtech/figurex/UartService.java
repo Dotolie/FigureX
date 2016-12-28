@@ -210,10 +210,10 @@ public class UartService extends Service {
      *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      *         callback.
      */
-    public boolean connect(final String address) {
+    public void connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
-            return false;
+            return;
         }
 
         // Previously connected device.  Try to reconnect.
@@ -222,16 +222,16 @@ public class UartService extends Service {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {
                 mConnectionState = STATE_CONNECTING;
-                return true;
+                return;
             } else {
-                return false;
+                return;
             }
         }
 
         final BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         if (device == null) {
             Log.w(TAG, "Device not found.  Unable to connect.");
-            return false;
+            return;
         }
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
@@ -239,7 +239,6 @@ public class UartService extends Service {
         Log.d(TAG, "Trying to create a new connection.");
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;
-        return true;
     }
 
     /**

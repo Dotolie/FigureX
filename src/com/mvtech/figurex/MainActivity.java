@@ -497,7 +497,7 @@ public class MainActivity extends Activity {
 
 		Toast.makeText(
 				this, 
-				"run 버튼 Tag = " + position,
+				"Motion(" + position+") Execute!",
 				Toast.LENGTH_SHORT
 				).show();
 
@@ -511,7 +511,7 @@ public class MainActivity extends Activity {
 
 		Toast.makeText(
 				this, 
-				"Send 버튼 Tag = " + position,
+				"Send Motion(" + position+") Config ",
 				Toast.LENGTH_SHORT
 				).show();
 

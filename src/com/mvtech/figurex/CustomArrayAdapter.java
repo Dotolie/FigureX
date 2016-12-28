@@ -119,13 +119,13 @@ public class CustomArrayAdapter extends ArrayAdapter<Motion>{
 			switch (v.getId()) {
 			
 			// 이미지 클릭
-			case R.id.iv_image:
-				Toast.makeText(
-						mContext, 
-						"이미지 Tag = " + v.getTag(),
-						Toast.LENGTH_SHORT
-						).show();
-				break;
+//			case R.id.iv_image:
+//				Toast.makeText(
+//						mContext, 
+//						"이미지 Tag = " + v.getTag(),
+//						Toast.LENGTH_SHORT
+//						).show();
+//				break;
 			
 			// 버튼 클릭
 			case R.id.btn_config:
@@ -144,11 +144,11 @@ public class CustomArrayAdapter extends ArrayAdapter<Motion>{
 				Motion motion = getItem(position);
 				motion.checked = !motion.checked;
 				
-				Toast.makeText(
-						mContext, 
-						"체크박스 Tag = " + v.getTag(),
-						Toast.LENGTH_SHORT
-						).show();
+//				Toast.makeText(
+//						mContext, 
+//						"체크박스 Tag = " + v.getTag(),
+//						Toast.LENGTH_SHORT
+//						).show();
 				break;
 
 			default:

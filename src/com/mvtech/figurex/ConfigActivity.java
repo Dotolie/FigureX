@@ -19,6 +19,7 @@ public class ConfigActivity extends Activity {
 	
 	private ImageView mIvIcon = null;
 	private TextView mTvTitle = null;
+	private TextView mTvMotionNo = null;
 	
 	private Button mBtnCancel = null;
 	private Button mBtnOk = null;
@@ -92,9 +93,11 @@ public class ConfigActivity extends Activity {
      * @param message 메시지
      */
 	private void setupViews() {
+		
 		mIvIcon = (ImageView)findViewById(R.id.iv_icon);
 		mTvTitle = (TextView)findViewById(R.id.tv_title_1);
-		 
+		mTvMotionNo = (TextView)findViewById(R.id.tv_motion_no);
+		
 		mSpSensorType = (Spinner)findViewById(R.id.sp_sensor_type);
 		mEtSensorValue = (EditText)findViewById(R.id.et_sensor_value);
 		
@@ -181,7 +184,7 @@ public class ConfigActivity extends Activity {
 				break;
 			}
 			mTvTitle.setText(mMotion.title);
-			
+			mTvMotionNo.setText(""+mMotion.no);
 			mSpSensorType.setSelection(mMotion.Sensor.type);
 			mEtSensorValue.setText(String.valueOf(mMotion.Sensor.value));
 			
