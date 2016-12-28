@@ -45,12 +45,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private final String TAG = "FigureX";
-    private static final int REQUEST_SELECT_DEVICE 	= 1;
+
     private static final int REQUEST_ENABLE_BT 		= 2;
     private static final int REQUEST_CODE2CONFIG 	= 3;
-    
-//    private static final int STATE_OFF = 10;
-
 	
 	
 	private CustomArrayAdapter mCustomArrayAdaptor = null;
