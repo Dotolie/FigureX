@@ -16,8 +16,19 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import com.mvtech.structures.Led;
+import com.mvtech.structures.Motion;
+import com.mvtech.structures.Motor;
+import com.mvtech.structures.Sensor;
+import com.mvtech.structures.Sound;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,9 +44,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	private final String TAG = "ActionTester";
+	private final String TAG = "FigureX";
+    private static final int REQUEST_SELECT_DEVICE 	= 1;
+    private static final int REQUEST_ENABLE_BT 		= 2;
+    private static final int REQUEST_CODE2CONFIG 	= 3;
+    
+//    private static final int STATE_OFF = 10;
+
 	
-	private static final int RequestCode2Config = 1;
+	
 	private CustomArrayAdapter mCustomArrayAdaptor = null;
 	private ArrayList<Motion> mMotionList = null;
 	private Button mBtnAdd = null;
@@ -47,15 +64,33 @@ public class MainActivity extends Activity {
 	private int mCount = 0;
 	private int mPosition = 0;
 	
-	
+
+    public TextView mTvDeviceName = null;
+    public TextView mTvMac = null;
+    public TextView mTvRssi = null;
+  
+    private Controller mController = null;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-        setLayout();
+		
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+        	Toast.makeText(this, "BLE is not available", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+		 
+		
+		setLayout();
         setViews();
-
         
+        mController = new Controller();
+        if( mController.init(this) == false ) {
+        	finish();
+        	return;
+        }
         mMotionList = xmlParser();
         
 //      BaseAdapter 연결
@@ -69,11 +104,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
 				
-				Toast.makeText(
-						getApplicationContext(), 
-						"Execute Motion = " + position,
-						Toast.LENGTH_SHORT
-						).show();
+				runMotion(position);
+				
 			}
 		});
         
@@ -101,6 +133,7 @@ public class MainActivity extends Activity {
 				return true;
 			}
 		});
+        
 	}
 
 	@Override
@@ -176,15 +209,20 @@ public class MainActivity extends Activity {
 		});
     	
     	mTvActionItems = (TextView)findViewById(R.id.tv_actionItems);
+    	
+    	mTvDeviceName = (TextView)findViewById(R.id.tv_devicename);
+    	mTvMac = (TextView)findViewById(R.id.tv_mac);
+    	mTvRssi = (TextView)findViewById(R.id.tv_rssi);
+    	
     }
     
     
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		switch( requestCode ) {
-		case RequestCode2Config:
+		case REQUEST_CODE2CONFIG:
 			if( resultCode == RESULT_OK) {
 				Motion motion = (Motion)data.getSerializableExtra("MotionObject");
 				Motion tmp = mMotionList.set(mPosition, motion);
@@ -194,8 +232,20 @@ public class MainActivity extends Activity {
 				Log.d(TAG,  "received intent CANCEL");
 			}
 			break;
-		default:
-			break;
+        case REQUEST_ENABLE_BT:
+            // When the request to enable Bluetooth returns
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "Bluetooth has turned on ", Toast.LENGTH_SHORT).show();
+            } else {
+                // User did not enable Bluetooth or an error occurred
+                Log.d(TAG, "BT not enabled");
+                Toast.makeText(this, "Problem in BT Turning ON ", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            break;
+        default:
+            Log.e(TAG, "wrong request code");
+            break;			
 		}
 	}
 
@@ -438,13 +488,33 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(getApplicationContext(), ConfigActivity.class);
 		intent.putExtra("MotionObject", motionObject);
 		
-		startActivityForResult(intent, RequestCode2Config);
+		startActivityForResult(intent, REQUEST_CODE2CONFIG);
     }
     
-    public void sendConfig(int position) {
+    public void runMotion(int position) {
+		byte[] datas;
+		Motion motion = mMotionList.get(position);
+		datas = new byte[1];
+		datas[0] = (byte) motion.no;
+		mController.runMotion(datas);
+
 		Toast.makeText(
 				this, 
 				"run 버튼 Tag = " + position,
+				Toast.LENGTH_SHORT
+				).show();
+
+    }
+    
+    public void sendConfig(int position) {
+		byte[] datas;
+		Motion motion = mMotionList.get(position);
+		datas = motion.getBytes();
+		mController.sendConfig(datas);					
+
+		Toast.makeText(
+				this, 
+				"Send 버튼 Tag = " + position,
 				Toast.LENGTH_SHORT
 				).show();
 
@@ -573,9 +643,61 @@ public class MainActivity extends Activity {
     	}
     	
     }
-    
+
     
     private void setLayout(){
     	mListView = (ListView) findViewById(R.id.lv_list);
     }	
+    
+    @Override
+    public void onDestroy() {
+		super.onDestroy();
+		Log.d(TAG, "onDestroy()");
+
+		try {
+			mController.close();
+			mController = null;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
+            Log.i(TAG, "onResume - BT not enabled yet");
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        }
+ 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        if (mController.mState == Controller.UART_PROFILE_CONNECTED) {
+//            Intent startMain = new Intent(Intent.ACTION_MAIN);
+//            startMain.addCategory(Intent.CATEGORY_HOME);
+//            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(startMain);
+//            Toast.makeText(this, 
+//            		"running in background.\nDisconnect to exit",
+//            		Toast.LENGTH_SHORT).show();
+//        }
+//        else 
+		{
+			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.popup_title)
+					.setMessage(R.string.popup_message)
+					.setPositiveButton(R.string.popup_yes, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+					}).setNegativeButton(R.string.popup_no, null).show();
+		}
+    }
+        
 }

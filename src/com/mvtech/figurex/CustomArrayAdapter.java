@@ -2,6 +2,8 @@ package com.mvtech.figurex;
 
 import java.util.ArrayList;
 
+import com.mvtech.structures.Motion;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

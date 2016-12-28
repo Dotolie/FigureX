@@ -1,4 +1,4 @@
-package com.mvtech.figurex;
+package com.mvtech.structures;
 
 import java.io.Serializable;
 
