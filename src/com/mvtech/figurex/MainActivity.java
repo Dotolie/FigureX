@@ -31,7 +31,6 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Xml;
 import android.view.Menu;
@@ -227,6 +226,7 @@ public class MainActivity extends Activity {
 			if( resultCode == RESULT_OK) {
 				Motion motion = (Motion)data.getSerializableExtra("MotionObject");
 				Motion tmp = mMotionList.set(mPosition, motion);
+				mCustomArrayAdaptor.notifyDataSetChanged();
 				Log.d(TAG, "received intent OK");
 			}
 			else {
@@ -495,8 +495,9 @@ public class MainActivity extends Activity {
     public void runMotion(int position) {
 		byte[] datas;
 		Motion motion = mMotionList.get(position);
-		datas = new byte[1];
-		datas[0] = (byte) motion.no;
+		datas = new byte[2];
+		datas[0] = Motion.REQ_MOTION;
+		datas[1] = (byte) motion.no;
 		mController.runMotion(datas);
 
 		Toast.makeText(
@@ -510,7 +511,7 @@ public class MainActivity extends Activity {
     public void sendConfig(int position) {
 		byte[] datas;
 		Motion motion = mMotionList.get(position);
-		datas = motion.getBytes();
+		datas = motion.getConfig();
 		mController.sendConfig(datas);					
 
 		Toast.makeText(

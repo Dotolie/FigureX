@@ -4,6 +4,19 @@ import java.io.Serializable;
 
 
 public class Motion implements Serializable {
+	public final static byte REQ_GREETING 	= 0x00;
+	public final static byte RSP_GREETING 	= 0x01;
+	public final static byte REQ_RESET 		= 0x02;
+	public final static byte RSP_RESET 		= 0x03;
+	public final static byte REQ_VERSION 	= 0x04;
+	public final static byte RSP_VERSION	= 0x05;
+	public final static byte REQ_MOTION		= 0x06;
+	public final static byte RSP_MOTION		= 0x07;
+	public final static byte REQ_SET_CONFIG	= 0x08;
+	public final static byte RSP_SET_CONFIG	= 0x09;
+	public final static byte REQ_GET_CONFIG	= 0x0A;
+	public final static byte RSP_GET_CONFIG	= 0x0B;
+	
 	public int no;
 	public String title;
 
@@ -26,10 +39,11 @@ public class Motion implements Serializable {
 		this.Led = led;
 	}
 
-	public byte[] getBytes() {
+	public byte[] getConfig() {
     	int index = 0;
-    	byte[] datas = new byte[31];
+    	byte[] datas = new byte[32];
     	
+    	datas[index++] = REQ_SET_CONFIG;
     	datas[index++] = (byte) this.no;
     	datas[index++] = this.Sensor.type;
     	datas[index++] = this.Sensor.value;

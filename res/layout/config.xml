@@ -12,16 +12,6 @@
         <RelativeLayout android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/tv_title_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@+id/iv_icon"
-                android:text="TextView"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
                 android:id="@+id/tv_motion_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,8 +26,6 @@
                 android:id="@+id/TextView30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/tv_title_1"
-                android:layout_alignBottom="@+id/tv_title_1"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
@@ -52,6 +40,27 @@
                 android:layout_marginLeft="46dp"
                 android:layout_toRightOf="@+id/tv_motion_no"
                 android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/TextView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_motion_no"
+                android:layout_alignBottom="@+id/tv_motion_no"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="28dp"
+                android:layout_toRightOf="@+id/iv_icon"
+                android:text="TITLE : "
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/TextView29"
+                android:ems="10"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse" />
 
         </RelativeLayout>
 

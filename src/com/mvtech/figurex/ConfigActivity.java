@@ -18,7 +18,7 @@ public class ConfigActivity extends Activity {
 	private Motion mMotion = null;
 	
 	private ImageView mIvIcon = null;
-	private TextView mTvTitle = null;
+	private EditText mEtTitle = null;
 	private TextView mTvMotionNo = null;
 	
 	private Button mBtnCancel = null;
@@ -95,7 +95,7 @@ public class ConfigActivity extends Activity {
 	private void setupViews() {
 		
 		mIvIcon = (ImageView)findViewById(R.id.iv_icon);
-		mTvTitle = (TextView)findViewById(R.id.tv_title_1);
+		mEtTitle = (EditText)findViewById(R.id.et_title);
 		mTvMotionNo = (TextView)findViewById(R.id.tv_motion_no);
 		
 		mSpSensorType = (Spinner)findViewById(R.id.sp_sensor_type);
@@ -183,7 +183,7 @@ public class ConfigActivity extends Activity {
 				mIvIcon.setImageResource(R.drawable.action);
 				break;
 			}
-			mTvTitle.setText(mMotion.title);
+			mEtTitle.setText(mMotion.title);
 			mTvMotionNo.setText(""+mMotion.no);
 			mSpSensorType.setSelection(mMotion.Sensor.type);
 			mEtSensorValue.setText(String.valueOf(mMotion.Sensor.value));
@@ -230,6 +230,7 @@ public class ConfigActivity extends Activity {
 	}
 	
 	private void getValues() {
+		mMotion.title = new String(mEtTitle.getText().toString());
 		mMotion.Sensor.type = (byte) mSpSensorType.getSelectedItemPosition(); 
 		mMotion.Sensor.value = Byte.parseByte(mEtSensorValue.getText().toString());
 		

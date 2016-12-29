@@ -258,23 +258,42 @@ public class Controller {
         return sb.toString();
     }
     
+    private byte[] makePacket( byte[] datas ) {
+    	int idx = 0;
+    	int checksum = 0;
+    	int nLen = datas.length;
+    	byte[] temp = new byte[nLen+4];
+    	
+    	temp[idx++] = 'M';				checksum += (int)'M';
+    	temp[idx++] = (byte) nLen;		checksum += nLen;
+    	for(int i=0;i<nLen;i++) {
+    		temp[idx++] = datas[i];
+    		checksum += datas[i];
+    	}
+    	temp[idx++] = (byte) checksum;
+    	temp[idx++] = '\n';
+		
+    	return temp;
+    }
+    
     public void runMotion( final byte[] datas ) {
 
     	if( mState == UART_PROFILE_CONNECTED ) {
-	    	mService.writeRXCharacteristic(datas);
-	    	Log.i(TAG, "execute motin="+byteArrayToDec(datas) );
+    		byte[] packet = makePacket( datas );
+	    	mService.writeRXCharacteristic(packet);
+	    	Log.i(TAG, "execute motin="+byteArrayToDec(packet) );
     	}
     	else {
     		Log.e(TAG,  "doesn't exceut run msg, connection lose !");
     	}
     }
     
-    public void sendConfig(final byte datas[]) {
-    	int nRest = datas.length;
-    	int nLen;
-    	boolean bRet;
-    	
+    public void sendConfig(final byte datas[]) {    	
     	if( mState == UART_PROFILE_CONNECTED ) {
+    		byte[] packet = makePacket( datas );
+    		int nRest = packet.length;
+        	int nLen = 0;
+    		
 	    	while( nRest > 0 ) {
 	    		if( (nRest-20) > 0 ) {
 	    			nLen = 20;    			
@@ -282,13 +301,14 @@ public class Controller {
 	    		else {
 	    			nLen = nRest;
 	    		}
-	    		byte[] packet = new byte[nLen];
-	    		System.arraycopy(datas, datas.length - nRest, packet, 0, nLen);
-	    		mService.writeRXCharacteristic(packet);
+	    		byte[] segment = new byte[nLen];
+	    		System.arraycopy(packet, packet.length - nRest, segment, 0, nLen);
+	    		
+	    		mService.writeRXCharacteristic(segment);
 	    		nRest = nRest - nLen;
 	    	}
 
-			Log.i(TAG, "config motin=" + byteArrayToDec(datas));
+			Log.i(TAG, "config motion=" + byteArrayToDec(packet));
     	}
     	else {
     		Log.e(TAG,  "doesn't send config, connection lose !");
