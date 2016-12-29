@@ -2,6 +2,7 @@ package com.mvtech.figurex;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
 
 public class Controller {
 	private final String TAG="Controller";
@@ -72,7 +74,7 @@ public class Controller {
         				e.printStackTrace();
         			}
         		}
-        		Log.e(TAG, "loop out for th");
+        		Log.e(TAG, "loop out for mService");
         	}
         });
         th.start();
@@ -121,8 +123,11 @@ public class Controller {
 				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
 				mService.connect(address);
 				mRssi = rssi;
-				Log.e(TAG,"mDevice=" + mDevice + ", mac=" + device.getAddress() + " mser=" + mService + ", rssi=" + rssi);
-
+				
+				Log.e(TAG,"mDevice=" + mDevice + ", mac=" + 
+						device.getAddress() + 
+						" mser=" + mService + 
+						", rssi=" + rssi);
 			}            	   
        }
     };    
@@ -130,16 +135,17 @@ public class Controller {
     public void scanLeDevice(final boolean enable) {
         if (enable) {
             // Stops scanning after a pre-defined scan period.
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBtAdapter.stopLeScan(mLeScanCallback);
-                }
-            }, SCAN_PERIOD);
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mScanning = false;
+//                    mBtAdapter.stopLeScan(mLeScanCallback);
+//                }
+//            }, SCAN_PERIOD);
 
+            UUID[] uids = new UUID[]{(UUID) UartService.RX_SERVICE_UUID};
             mScanning = true;
-            mBtAdapter.startLeScan(mLeScanCallback);
+            mBtAdapter.startLeScan(uids, mLeScanCallback);
         } else {
             mScanning = false;
             mBtAdapter.stopLeScan(mLeScanCallback);
@@ -180,6 +186,7 @@ public class Controller {
 						((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
 						((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
 
+						((MainActivity)mContext).mPgScanning.setVisibility(View.INVISIBLE);
 						Log.d(TAG, "UART_CONNECT_MSG");
 					}
 				});
@@ -193,12 +200,15 @@ public class Controller {
 					@Override
 					public void run() {
 						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-						((MainActivity)mContext).mTvDeviceName.setText("None");
-						((MainActivity)mContext).mTvMac.setText("[--:--:--:--:--:--]");
-						((MainActivity)mContext).mTvRssi.setText("-90");	
+						((MainActivity)mContext).mTvDeviceName.setText("Scanning ... ");
+						((MainActivity)mContext).mTvMac.setText("");
+						((MainActivity)mContext).mTvRssi.setText("");	
 						
 						Log.d(TAG, "UART_DISCONNECT_MSG");
 						mService.close();
+						
+						((MainActivity)mContext).mPgScanning.setVisibility(View.VISIBLE);
+						scanLeDevice(true);
 					}
 				});
 				
