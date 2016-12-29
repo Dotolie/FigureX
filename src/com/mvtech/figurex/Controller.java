@@ -172,21 +172,37 @@ public class Controller {
             final Intent mIntent = intent;
            //*********************//
 			if (action.equals(UartService.ACTION_GATT_CONNECTED)) {
-				String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-				((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
-				((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
-				((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
-				Log.d(TAG, "UART_CONNECT_MSG");
+				((MainActivity)mContext).runOnUiThread( new Runnable() {
+					@Override
+					public void run() {
+						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+						((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
+						((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
+						((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
+
+						Log.d(TAG, "UART_CONNECT_MSG");
+					}
+				});
+				
+				mState = UART_PROFILE_CONNECTED;
 			}
            
           //*********************//
 			if (action.equals(UartService.ACTION_GATT_DISCONNECTED)) {
-				String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-				((MainActivity)mContext).mTvDeviceName.setText("None");
-				((MainActivity)mContext).mTvMac.setText("[--:--:--:--:--:--]");
-				((MainActivity)mContext).mTvRssi.setText("-90");
-				Log.d(TAG, "UART_DISCONNECT_MSG");
-				mService.close();
+				((MainActivity)mContext).runOnUiThread( new Runnable() {
+					@Override
+					public void run() {
+						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+						((MainActivity)mContext).mTvDeviceName.setText("None");
+						((MainActivity)mContext).mTvMac.setText("[--:--:--:--:--:--]");
+						((MainActivity)mContext).mTvRssi.setText("-90");	
+						
+						Log.d(TAG, "UART_DISCONNECT_MSG");
+						mService.close();
+					}
+				});
+				
+				mState = UART_PROFILE_DISCONNECTED;
 			}            
           
           //*********************//
@@ -199,18 +215,23 @@ public class Controller {
 
 				try {
 					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-					String msg = new String( txValue,0,txValue.length);
-					Log.e(TAG, " RX("+txValue.length+")="+ msg);
+					String msg = new String(txValue, 0, txValue.length);
+					Log.i(TAG, " RX(" + txValue.length + ")=" + msg);
 				} catch (Exception e) {
 					Log.e(TAG, e.toString());
 				}
 			}
 	           //*********************//
             if (action.equals(UartService.DEVICE_DOES_NOT_SUPPORT_UART)){
-            	Log.e(TAG, " uart disconnect");
+				Log.e(TAG, " uart disconnect");
             	mService.disconnect();
             }
         }
+
+		private void runOnUiThread(Runnable runnable) {
+			// TODO Auto-generated method stub
+			
+		}
     };    
     
     String byteArrayToHex(byte[] a) {
@@ -227,36 +248,40 @@ public class Controller {
         return sb.toString();
     }
     
-    public void runMotion( byte[] datas ) {
-    	boolean bRet;
+    public void runMotion( final byte[] datas ) {
 
-    	bRet = mService.writeRXCharacteristic(datas);
-     	if( bRet == false ) {
-     		bRet = mService.writeRXCharacteristic(datas);
-     	}
-    	Log.d(TAG, "run msg="+byteArrayToDec(datas));    	
+    	if( mState == UART_PROFILE_CONNECTED ) {
+	    	mService.writeRXCharacteristic(datas);
+	    	Log.i(TAG, "execute motin="+byteArrayToDec(datas) );
+    	}
+    	else {
+    		Log.e(TAG,  "doesn't exceut run msg, connection lose !");
+    	}
     }
     
-    public void sendConfig(byte datas[]) {
+    public void sendConfig(final byte datas[]) {
     	int nRest = datas.length;
     	int nLen;
     	boolean bRet;
-    	while( nRest > 0 ) {
-    		if( (nRest-20) > 0 ) {
-    			nLen = 20;    			
-    		}
-    		else {
-    			nLen = nRest;
-    		}
-    		byte[] packet = new byte[nLen];
-    		System.arraycopy(datas, datas.length - nRest, packet, 0, nLen);
-    		bRet = mService.writeRXCharacteristic(packet);
-    		if( bRet == false ) {
-    			bRet = mService.writeRXCharacteristic(packet);
-    		}
-    		nRest = nRest - nLen;
-    	}
     	
-    	Log.d(TAG, "config msg="+byteArrayToDec(datas));    	
+    	if( mState == UART_PROFILE_CONNECTED ) {
+	    	while( nRest > 0 ) {
+	    		if( (nRest-20) > 0 ) {
+	    			nLen = 20;    			
+	    		}
+	    		else {
+	    			nLen = nRest;
+	    		}
+	    		byte[] packet = new byte[nLen];
+	    		System.arraycopy(datas, datas.length - nRest, packet, 0, nLen);
+	    		mService.writeRXCharacteristic(packet);
+	    		nRest = nRest - nLen;
+	    	}
+
+			Log.i(TAG, "config motin=" + byteArrayToDec(datas));
+    	}
+    	else {
+    		Log.e(TAG,  "doesn't send config, connection lose !");
+    	}
     }
 }

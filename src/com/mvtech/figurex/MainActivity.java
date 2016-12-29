@@ -25,13 +25,13 @@ import com.mvtech.structures.Sound;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Xml;
 import android.view.Menu;
@@ -40,6 +40,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +66,9 @@ public class MainActivity extends Activity {
     public TextView mTvDeviceName = null;
     public TextView mTvMac = null;
     public TextView mTvRssi = null;
-  
+
+    public ProgressBar mPgScanning = null;
+    
     private Controller mController = null;
     
 	@Override
@@ -211,6 +214,7 @@ public class MainActivity extends Activity {
     	mTvMac = (TextView)findViewById(R.id.tv_mac);
     	mTvRssi = (TextView)findViewById(R.id.tv_rssi);
     	
+    	mPgScanning = (ProgressBar)findViewById(R.id.pg_scanning);
     }
     
     
