@@ -26,6 +26,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/iv_image"
             android:background="@android:drawable/btn_default"
+            android:enabled="false"
             android:focusable="false"
             android:text="Send"
             android:visibility="visible" />

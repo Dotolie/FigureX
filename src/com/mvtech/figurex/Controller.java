@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.mvtech.structures.Motion;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -18,6 +20,7 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public class Controller {
 	private final String TAG="Controller";
@@ -185,8 +188,10 @@ public class Controller {
 						((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
 						((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
 						((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
-
 						((MainActivity)mContext).mPgScanning.setVisibility(View.INVISIBLE);
+						
+						((MainActivity)mContext).SetButtons(true);
+						
 						Log.d(TAG, "UART_CONNECT_MSG");
 					}
 				});
@@ -202,7 +207,9 @@ public class Controller {
 						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
 						((MainActivity)mContext).mTvDeviceName.setText("Scanning ... ");
 						((MainActivity)mContext).mTvMac.setText("");
-						((MainActivity)mContext).mTvRssi.setText("");	
+						((MainActivity)mContext).mTvRssi.setText("");
+						
+						((MainActivity)mContext).SetButtons(false);
 						
 						Log.d(TAG, "UART_DISCONNECT_MSG");
 						mService.close();
@@ -276,21 +283,36 @@ public class Controller {
     	return temp;
     }
     
-    public void runMotion( final byte[] datas ) {
+    public void runMotion( int position ) {
 
     	if( mState == UART_PROFILE_CONNECTED ) {
-    		byte[] packet = makePacket( datas );
+    		Motion motion = ((MainActivity)mContext).mMotionList.get(position);
+    		byte[] payload = new byte[2];
+    		payload[0] = Motion.REQ_MOTION;
+    		payload[1] = (byte) motion.no;
+    		
+    		byte[] packet = makePacket( payload );
 	    	mService.writeRXCharacteristic(packet);
-	    	Log.i(TAG, "execute motin="+byteArrayToDec(packet) );
+
+	    	Toast.makeText(
+					mContext, 
+					"Motion(" + position+") Execute!",
+					Toast.LENGTH_SHORT
+					).show();
+
+
+	    	Log.i(TAG, "execute motion="+byteArrayToDec(packet) );
     	}
     	else {
     		Log.e(TAG,  "doesn't exceut run msg, connection lose !");
     	}
     }
     
-    public void sendConfig(final byte datas[]) {    	
+    public void sendConfig( int position ) {    	
     	if( mState == UART_PROFILE_CONNECTED ) {
-    		byte[] packet = makePacket( datas );
+    		Motion motion = ((MainActivity)mContext).mMotionList.get(position);
+    		byte[] payload = motion.getConfig();
+    		byte[] packet = makePacket( payload );
     		int nRest = packet.length;
         	int nLen = 0;
     		
@@ -308,6 +330,13 @@ public class Controller {
 	    		nRest = nRest - nLen;
 	    	}
 
+			Toast.makeText(
+					mContext, 
+					"Send Motion(" + position+") Config ",
+					Toast.LENGTH_SHORT
+					).show();
+
+	    	
 			Log.i(TAG, "config motion=" + byteArrayToDec(packet));
     	}
     	else {

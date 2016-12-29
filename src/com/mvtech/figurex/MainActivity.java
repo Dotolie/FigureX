@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
 	
 	
 	private CustomArrayAdapter mCustomArrayAdaptor = null;
-	private ArrayList<Motion> mMotionList = null;
+	public ArrayList<Motion> mMotionList = null;
 	private Button mBtnAdd = null;
 	private Button mBtnDeletes = null;
 	private Button mBtnSave = null;
@@ -190,7 +190,7 @@ public class MainActivity extends Activity {
 							mTvActionItems.setText(""+mCount);
 						}
 					});
-					
+
 					mCustomArrayAdaptor.notifyDataSetChanged();
 				}
 			}
@@ -493,33 +493,11 @@ public class MainActivity extends Activity {
     }
     
     public void runMotion(int position) {
-		byte[] datas;
-		Motion motion = mMotionList.get(position);
-		datas = new byte[2];
-		datas[0] = Motion.REQ_MOTION;
-		datas[1] = (byte) motion.no;
-		mController.runMotion(datas);
-
-		Toast.makeText(
-				this, 
-				"Motion(" + position+") Execute!",
-				Toast.LENGTH_SHORT
-				).show();
-
+		mController.runMotion( position );
     }
     
     public void sendConfig(int position) {
-		byte[] datas;
-		Motion motion = mMotionList.get(position);
-		datas = motion.getConfig();
-		mController.sendConfig(datas);					
-
-		Toast.makeText(
-				this, 
-				"Send Motion(" + position+") Config ",
-				Toast.LENGTH_SHORT
-				).show();
-
+		mController.sendConfig( position );					
     }
     
     private void saveConfig() {
@@ -702,4 +680,19 @@ public class MainActivity extends Activity {
 		}
     }
         
+    public void SetButtons(final boolean bOnOff) {
+		
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				int first= mListView.getFirstVisiblePosition();
+				for(int i=first;mListView.getChildAt(i)!=null;i++) {
+					Button m = (Button) mListView.getChildAt(i).findViewById(R.id.btn_run);
+					m.setEnabled(bOnOff);
+					TextView t = (TextView) mListView.getChildAt(i).findViewById(R.id.tv_title);
+					t.setEnabled(bOnOff);
+				}				
+			}
+		});
+    }
 }
