@@ -81,14 +81,6 @@
             android:layout_weight="5" >
 
             <Button
-                android:id="@+id/btn_save"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/btn_add"
-                android:text="Save" />
-
-            <Button
                 android:id="@+id/btn_deletes"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"

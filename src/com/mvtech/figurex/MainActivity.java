@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
 	public ArrayList<Motion> mMotionList = null;
 	private Button mBtnAdd = null;
 	private Button mBtnDeletes = null;
-	private Button mBtnSave = null;
+//	private Button mBtnSave = null;
 	private TextView mTvActionItems = null;
 	private ListView mListView = null;
 	
@@ -197,15 +197,15 @@ public class MainActivity extends Activity {
 		});
     	
     	
-    	mBtnSave = (Button)findViewById(R.id.btn_save);
-    	mBtnSave.setOnClickListener( new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				saveConfig();
-			}
-		});
+//    	mBtnSave = (Button)findViewById(R.id.btn_save);
+//    	mBtnSave.setOnClickListener( new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				saveConfig();
+//			}
+//		});
     	
     	mTvActionItems = (TextView)findViewById(R.id.tv_actionItems);
     	
@@ -632,6 +632,9 @@ public class MainActivity extends Activity {
     @Override
     public void onDestroy() {
 		super.onDestroy();
+		
+		saveConfig();
+		
 		Log.d(TAG, "onDestroy()");
 
 		try {
