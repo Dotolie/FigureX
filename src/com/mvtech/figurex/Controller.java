@@ -119,7 +119,7 @@ public class Controller {
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
 			String name = device.getName();
-			if ( name != null && device.getName().equals("Nordic_UART")) {
+//			if ( name != null && device.getName().equals("Nordic_UART")) {
 				scanLeDevice(false);
 				String address = device.getAddress();
 
@@ -131,7 +131,7 @@ public class Controller {
 						device.getAddress() + 
 						" mser=" + mService + 
 						", rssi=" + rssi);
-			}            	   
+//			}            	   
        }
     };    
     
