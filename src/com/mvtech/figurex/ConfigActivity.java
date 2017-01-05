@@ -169,15 +169,18 @@ public class ConfigActivity extends Activity {
 		try {
 			switch( mMotion.Sensor.type) {
 			case 0:
-				mIvIcon.setImageResource(R.drawable.connect);
+				mIvIcon.setImageResource(R.drawable.none);
 				break;
 			case 1:
-				mIvIcon.setImageResource(R.drawable.disconnect);
+				mIvIcon.setImageResource(R.drawable.connect);
 				break;
 			case 2:
-				mIvIcon.setImageResource(R.drawable.battery_low);
+				mIvIcon.setImageResource(R.drawable.disconnect);
 				break;
 			case 3:
+				mIvIcon.setImageResource(R.drawable.battery_low);
+				break;
+			case 4:
 				mIvIcon.setImageResource(R.drawable.vibration);
 				break;
 			default:

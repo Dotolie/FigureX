@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sensors">    
+        <item>None</item>
         <item>Connect</item>
         <item>Disconnect</item>
         <item>LowBattery</item>
-        <item>Noise</item>
+        <item>Vibration</item>
         <item>Light</item>
         <item>Proximity</item>
         <item>Gyroscope</item>
         <item>Acceleration</item>
-        <item>Vibration</item>
+        <item>Noise</item>
         <item>UserMotion</item>
     </string-array>
     <string-array name="sounds">

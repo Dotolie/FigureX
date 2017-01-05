@@ -86,12 +86,14 @@ public class CustomArrayAdapter extends ArrayAdapter<Motion>{
 		viewHolder.cb_box.setOnClickListener(buttonClickListener);
 
 		if( getItem(position).Sensor.type == 0)
+			viewHolder.iv_image.setImageResource(R.drawable.none);
+		else if( getItem(position).Sensor.type == 1)
 			viewHolder.iv_image.setImageResource(R.drawable.connect);
-		else if( getItem(position).Sensor.type == 1 )
-			viewHolder.iv_image.setImageResource(R.drawable.disconnect);
 		else if( getItem(position).Sensor.type == 2 )
-			viewHolder.iv_image.setImageResource(R.drawable.battery_low);
+			viewHolder.iv_image.setImageResource(R.drawable.disconnect);
 		else if( getItem(position).Sensor.type == 3 )
+			viewHolder.iv_image.setImageResource(R.drawable.battery_low);
+		else if( getItem(position).Sensor.type == 4 )
 			viewHolder.iv_image.setImageResource(R.drawable.vibration);
 		else 
 			viewHolder.iv_image.setImageResource(R.drawable.action);

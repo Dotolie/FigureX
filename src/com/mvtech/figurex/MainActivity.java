@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
     				
     				//--------------------------------------------------------
     				if( startTag.equals("motion")) {
-    					Sensor _sensor = new Sensor(5,10);
+    					Sensor _sensor = new Sensor(10,10);
     					Motor[] _motors = { 
     							new Motor(1,0,9,100,50,5),
     							new Motor(2,0,9,100,50,5),
@@ -451,7 +451,7 @@ public class MainActivity extends Activity {
     }
     
     private void addNewMotion() {
-		Sensor sensor = new Sensor(4,10);
+		Sensor sensor = new Sensor(10,10);
 		Motor[] motors = { 
 				new Motor(0,-5,5,100,50,5),
 				new Motor(0,-4,4,100,40,4),

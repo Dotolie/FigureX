@@ -50,7 +50,7 @@
     <motion id="1">
         <name>DisConnect</name>
         <sensor>
-            <type>1</type>
+            <type>2</type>
             <value>10</value>
         </sensor>
         <motor id="0">
@@ -97,7 +97,7 @@
     <motion id="2">
         <name>LowBattery</name>
         <sensor>
-            <type>1</type>
+            <type>3</type>
             <value>10</value>
         </sensor>
         <motor id="0">
@@ -144,7 +144,7 @@
     <motion id="3">
         <name>Vibration</name>
         <sensor>
-            <type>1</type>
+            <type>4</type>
             <value>10</value>
         </sensor>
         <motor id="0">
@@ -191,7 +191,7 @@
     <motion id="4">
         <name>Action</name>
         <sensor>
-            <type>1</type>
+            <type>10</type>
             <value>10</value>
         </sensor>
         <motor id="0">
