@@ -16,7 +16,7 @@
             android:layout_alignBottom="@+id/tv_devicename"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_devicename"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#ffaab000" />
 
         <TextView
@@ -24,9 +24,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="21dp"
+            android:layout_marginLeft="5dp"
             android:text="Device :"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/tv_rssi"
@@ -37,7 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="23dp"
             android:layout_toRightOf="@+id/tv_mac"
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#ffaa3333" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:layout_marginLeft="22dp"
             android:layout_toRightOf="@+id/textView1"
             android:text="Sanning ... "
-            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#ff10aaf0" />
 
         <ProgressBar
@@ -82,17 +82,17 @@
 
             <Button
                 android:id="@+id/btn_deletes"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="65dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="5dp"
                 android:text="Deletes" />
 
             <Button
                 android:id="@+id/btn_add"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/tv_actionItems"
                 android:layout_weight="5"
@@ -105,20 +105,20 @@
                 android:layout_alignBaseline="@+id/btn_add"
                 android:layout_alignBottom="@+id/btn_add"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
-                android:text="Action Items :"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_marginLeft="5dp"
+                android:text="Items :"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/tv_actionItems"
-                android:layout_width="50dp"
+                android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/btn_add"
                 android:layout_alignBottom="@+id/btn_add"
                 android:layout_marginLeft="28dp"
                 android:layout_toRightOf="@+id/tv_actionItems_label"
                 android:text="0"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </RelativeLayout>
     </RelativeLayout>

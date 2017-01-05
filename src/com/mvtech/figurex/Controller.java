@@ -327,6 +327,12 @@ public class Controller {
 	    		System.arraycopy(packet, packet.length - nRest, segment, 0, nLen);
 	    		
 	    		mService.writeRXCharacteristic(segment);
+	    		try {
+	    			Thread.sleep(10);
+	    		}
+	    		catch(Exception e) {
+	    			e.printStackTrace();
+	    		}
 	    		nRest = nRest - nLen;
 	    	}
 

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -166,7 +167,7 @@ public class ConfigActivity extends Activity {
 	private void setValues() {
 		
 		try {
-			switch( mMotion.no) {
+			switch( mMotion.Sensor.type) {
 			case 0:
 				mIvIcon.setImageResource(R.drawable.connect);
 				break;

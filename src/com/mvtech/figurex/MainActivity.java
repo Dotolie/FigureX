@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
 	
 	private int mCount = 0;
 	private int mPosition = 0;
+	private int mLastCount = 0;
 	
 
     public TextView mTvDeviceName = null;
@@ -91,7 +92,8 @@ public class MainActivity extends Activity {
         	return;
         }
         mMotionList = xmlParser();
-        
+        mLastCount = mCount = mMotionList.size();
+        mTvActionItems.setText(""+mCount);	
 //      BaseAdapter 연결
 //      mListView.setAdapter(new CustomBaseAdapter(this, mCareList));
         
@@ -449,7 +451,7 @@ public class MainActivity extends Activity {
     }
     
     private void addNewMotion() {
-		Sensor sensor = new Sensor(0,0);
+		Sensor sensor = new Sensor(4,10);
 		Motor[] motors = { 
 				new Motor(0,-5,5,100,50,5),
 				new Motor(0,-4,4,100,40,4),
@@ -459,16 +461,15 @@ public class MainActivity extends Activity {
 		Sound sound = new Sound(1, 100);
 		Led led = new Led(1, 20);
 
-		mCount = mMotionList.size();
 		Motion motion = new Motion(
-				mCount,
-				"User Motion="+mCount, 
+				mLastCount,
+				"User Motion="+mLastCount, 
 				sensor,
 				motors,
 				sound,
 				led
 				);
-		
+		mLastCount++;
 		mMotionList.add( motion );
 		
 		runOnUiThread(new Runnable() {

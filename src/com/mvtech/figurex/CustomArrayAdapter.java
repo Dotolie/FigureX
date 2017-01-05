@@ -76,8 +76,8 @@ public class CustomArrayAdapter extends ArrayAdapter<Motion>{
 		viewHolder.tv_title.setText(getItem(position).title);
 		viewHolder.tv_title.setTag(position);
 		
-		viewHolder.iv_image.setOnClickListener(buttonClickListener);
-		viewHolder.iv_image.setTag(position);
+//		viewHolder.iv_image.setOnClickListener(buttonClickListener);
+//		viewHolder.iv_image.setTag(position);
 		
 		viewHolder.btn_config.setOnClickListener(buttonClickListener);
 		viewHolder.btn_config.setTag(position);
@@ -85,13 +85,13 @@ public class CustomArrayAdapter extends ArrayAdapter<Motion>{
 		viewHolder.cb_box.setTag(position);
 		viewHolder.cb_box.setOnClickListener(buttonClickListener);
 
-		if( position == 0)
+		if( getItem(position).Sensor.type == 0)
 			viewHolder.iv_image.setImageResource(R.drawable.connect);
-		else if( position == 1 )
+		else if( getItem(position).Sensor.type == 1 )
 			viewHolder.iv_image.setImageResource(R.drawable.disconnect);
-		else if( position == 2 )
+		else if( getItem(position).Sensor.type == 2 )
 			viewHolder.iv_image.setImageResource(R.drawable.battery_low);
-		else if( position == 3 )
+		else if( getItem(position).Sensor.type == 3 )
 			viewHolder.iv_image.setImageResource(R.drawable.vibration);
 		else 
 			viewHolder.iv_image.setImageResource(R.drawable.action);
