@@ -35,9 +35,9 @@ public class Controller {
     public static int mState = UART_PROFILE_DISCONNECTED;
 	
     private boolean mScanning = false;
-    private UartService mService = null;
-    private BluetoothDevice mDevice = null;
-    private BluetoothAdapter mBtAdapter = null;	
+    public UartService mService = null;
+    public BluetoothDevice mDevice = null;
+    public BluetoothAdapter mBtAdapter = null;	
 
 	public Context mContext;
 	Handler mHandler = null;
@@ -60,27 +60,27 @@ public class Controller {
 
         mHandler = new Handler();
         
-        Thread th = new Thread(new Runnable() {
-        	@Override
-        	public void run() {
-        		while(true) {
-
-        			if( mService != null ) {
-        				scanLeDevice(true);
-        				break;
-        			}
-
-        			try {
-        				Thread.sleep(1000);
-        			}
-        			catch(InterruptedException e ) {
-        				e.printStackTrace();
-        			}
-        		}
-        		Log.e(TAG, "loop out for mService");
-        	}
-        });
-        th.start();
+//        Thread th = new Thread(new Runnable() {
+//        	@Override
+//        	public void run() {
+//        		while(true) {
+//
+//        			if( mService != null ) {
+//        				scanLeDevice(true);
+//        				break;
+//        			}
+//
+//        			try {
+//        				Thread.sleep(1000);
+//        			}
+//        			catch(InterruptedException e ) {
+//        				e.printStackTrace();
+//        			}
+//        		}
+//        		Log.e(TAG, "loop out for mService");
+//        	}
+//        });
+//        th.start();
         
         return true;
 	}
@@ -115,45 +115,45 @@ public class Controller {
     }	
     
 
-	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-			String name = device.getName();
-//			if ( name != null && device.getName().equals("Nordic_UART")) {
-				scanLeDevice(false);
-				String address = device.getAddress();
-
-				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
-				mService.connect(address);
-				mRssi = rssi;
-				
-				Log.e(TAG,"mDevice=" + mDevice + ", mac=" + 
-						device.getAddress() + 
-						" mser=" + mService + 
-						", rssi=" + rssi);
+//	private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+//        @Override
+//        public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
+//			String name = device.getName();
+//			if ( name != null && device.getName().equals("FIGURE_UART")) {
+//				scanLeDevice(false);
+//				String address = device.getAddress();
+//
+//				mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
+//				mService.connect(address);
+//				mRssi = rssi;
+//				
+//				Log.e(TAG,"mDevice=" + mDevice + ", mac=" + 
+//						device.getAddress() + 
+//						" mser=" + mService + 
+//						", rssi=" + rssi);
 //			}            	   
-       }
-    };    
-    
-    public void scanLeDevice(final boolean enable) {
-        if (enable) {
-            // Stops scanning after a pre-defined scan period.
-//            mHandler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    mScanning = false;
-//                    mBtAdapter.stopLeScan(mLeScanCallback);
-//                }
-//            }, SCAN_PERIOD);
-
-            UUID[] uids = new UUID[]{(UUID) UartService.RX_SERVICE_UUID};
-            mScanning = true;
-            mBtAdapter.startLeScan(uids, mLeScanCallback);
-        } else {
-            mScanning = false;
-            mBtAdapter.stopLeScan(mLeScanCallback);
-        }
-    }
+//       }
+//    };    
+//    
+//    public void scanLeDevice(final boolean enable) {
+//        if (enable) {
+//            // Stops scanning after a pre-defined scan period.
+////            mHandler.postDelayed(new Runnable() {
+////                @Override
+////                public void run() {
+////                    mScanning = false;
+////                    mBtAdapter.stopLeScan(mLeScanCallback);
+////                }
+////            }, SCAN_PERIOD);
+//
+////            UUID[] uids = new UUID[]{(UUID) UartService.RX_SERVICE_UUID};
+//            mScanning = true;
+//            mBtAdapter.startLeScan(null, mLeScanCallback);
+//        } else {
+//            mScanning = false;
+//            mBtAdapter.stopLeScan(mLeScanCallback);
+//        }
+//    }
     
     
     //UART service connected/disconnected
@@ -184,14 +184,14 @@ public class Controller {
 				((MainActivity)mContext).runOnUiThread( new Runnable() {
 					@Override
 					public void run() {
-						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+//						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
 						((MainActivity)mContext).mTvDeviceName.setText(mDevice.getName());
 						((MainActivity)mContext).mTvMac.setText("["+mDevice.getAddress()+"]");
-						((MainActivity)mContext).mTvRssi.setText(String.valueOf(mRssi));
-						((MainActivity)mContext).mPgScanning.setVisibility(View.INVISIBLE);
+						((MainActivity)mContext).mTvRssi.setText("");
+//						((MainActivity)mContext).mPgScanning.setVisibility(View.INVISIBLE);
 						
 						((MainActivity)mContext).SetButtons(true);
-						
+						((MainActivity)mContext).mBtnConnectDisconnect.setText("Disconnect");
 						Log.d(TAG, "UART_CONNECT_MSG");
 					}
 				});
@@ -204,18 +204,18 @@ public class Controller {
 				((MainActivity)mContext).runOnUiThread( new Runnable() {
 					@Override
 					public void run() {
-						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-						((MainActivity)mContext).mTvDeviceName.setText("Scanning ... ");
+//						String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+						((MainActivity)mContext).mTvDeviceName.setText("Not Connected");
 						((MainActivity)mContext).mTvMac.setText("");
 						((MainActivity)mContext).mTvRssi.setText("");
 						
 						((MainActivity)mContext).SetButtons(false);
-						
+						((MainActivity)mContext).mBtnConnectDisconnect.setText("Connect");
 						Log.d(TAG, "UART_DISCONNECT_MSG");
-						mService.close();
+						mService.disconnect();
 						
-						((MainActivity)mContext).mPgScanning.setVisibility(View.VISIBLE);
-						scanLeDevice(true);
+//						((MainActivity)mContext).mPgScanning.setVisibility(View.VISIBLE);
+//						scanLeDevice(true);
 					}
 				});
 				
@@ -231,7 +231,7 @@ public class Controller {
 				final byte[] txValue = intent.getByteArrayExtra(UartService.EXTRA_DATA);
 
 				try {
-					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
+//					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
 					String msg = new String(txValue, 0, txValue.length);
 					Log.i(TAG, " RX(" + txValue.length + ")=" + msg);
 				} catch (Exception e) {

@@ -25,6 +25,7 @@ import com.mvtech.structures.Sound;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +47,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	private final String TAG = "FigureX";
 
+    private static final int REQUEST_SELECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT 		= 2;
     private static final int REQUEST_CODE2CONFIG 	= 3;
 	
@@ -55,6 +57,7 @@ public class MainActivity extends Activity {
 	private Button mBtnAdd = null;
 	private Button mBtnDeletes = null;
 //	private Button mBtnSave = null;
+	public Button mBtnConnectDisconnect = null;
 	private TextView mTvActionItems = null;
 	private ListView mListView = null;
 	
@@ -71,11 +74,14 @@ public class MainActivity extends Activity {
     
     private Controller mController = null;
     
+
+    
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+        
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
         	Toast.makeText(this, "BLE is not available", Toast.LENGTH_LONG).show();
             finish();
@@ -216,6 +222,36 @@ public class MainActivity extends Activity {
     	mTvRssi = (TextView)findViewById(R.id.tv_rssi);
     	
     	mPgScanning = (ProgressBar)findViewById(R.id.pg_scanning);
+    	
+    	
+    	mBtnConnectDisconnect = (Button)findViewById(R.id.btn_connectDisconnect);
+        // Handle Disconnect & Connect button
+    	mBtnConnectDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mController.mBtAdapter.isEnabled()) {
+                    Log.i(TAG, "onClick - BT not enabled yet");
+                    Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                }
+                else {
+                	if (mBtnConnectDisconnect.getText().equals("Connect")){
+                		
+                		//Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
+                		
+            			Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+            			startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
+        			} else {
+        				//Disconnect button pressed
+        				if (mController.mDevice!=null)
+        				{
+        					mController.mService.disconnect();
+        					
+        				}
+        			}
+                }
+            }
+        });
     }
     
     
@@ -235,6 +271,17 @@ public class MainActivity extends Activity {
 				Log.d(TAG,  "received intent CANCEL");
 			}
 			break;
+        case REQUEST_SELECT_DEVICE:
+        	//When the DeviceListActivity return, with the selected device address
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                String deviceAddress = data.getStringExtra(BluetoothDevice.EXTRA_DEVICE);
+                mController.mDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(deviceAddress);
+               
+                Log.d(TAG, "... onActivityResultdevice.address==" + mController.mDevice + ", mserviceValue=" + mController.mService);
+//                ((TextView) findViewById(R.id.deviceName)).setText(mDevice.getName()+ " - connecting");
+                mController.mService.connect(deviceAddress);
+            }
+            break;			
         case REQUEST_ENABLE_BT:
             // When the request to enable Bluetooth returns
             if (resultCode == Activity.RESULT_OK) {

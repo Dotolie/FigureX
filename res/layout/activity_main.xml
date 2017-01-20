@@ -49,7 +49,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="22dp"
             android:layout_toRightOf="@+id/textView1"
-            android:text="Sanning ... "
+            android:text="Not Connected"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#ff10aaf0" />
 
@@ -58,7 +58,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/tv_rssi" />
+            android:layout_toRightOf="@+id/tv_rssi"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/btn_connectDisconnect"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:text="Connect" />
 
     </RelativeLayout>
 
@@ -86,7 +97,6 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
                 android:text="Deletes" />
 
             <Button
